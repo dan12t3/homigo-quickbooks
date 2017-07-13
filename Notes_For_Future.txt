@@ -1,0 +1,4 @@
+NOTES FOR FUTURE for practicing TDD
+
+1. host a server on PORT
+2. make a test case; perhaps make a get request to server n PORT

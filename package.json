@@ -4,7 +4,8 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node index.js"
   },
   "repository": {
     "type": "git",
@@ -15,5 +16,12 @@
   "bugs": {
     "url": "https://github.com/dan12t3/homigo-quickbooks/issues"
   },
-  "homepage": "https://github.com/dan12t3/homigo-quickbooks#readme"
+  "homepage": "https://github.com/dan12t3/homigo-quickbooks#readme",
+  "dependencies": {
+    "express": "^4.15.3"
+  },
+  "devDependencies": {
+    "eslint": "^4.2.0",
+    "eslint-plugin-node": "^5.1.0"
+  }
 }
