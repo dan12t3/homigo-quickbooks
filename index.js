@@ -7,7 +7,7 @@ const querystring = require('querystring');
 
 let app = express();
 
-const grantURL = 'kuikview-backend.herokuapp.com/oauth-redirect';
+const grantURL = 'http://localhost:5000.com/oauth-redirect';
 const consumerKey = 'qyprdpCFmIezychyaIgYRuY6osoApE';
 
 // listening on a PORT
@@ -28,7 +28,7 @@ app.listen( process.env.PORT || 5000, (err) => {
 //functions
 app.get('/oauth-redirect',(request, response) => {
   console.log(request.query);
-  response.end(request.query);
+  response.end();
 });
 
 app.get('/',(request,response) => {
@@ -69,6 +69,8 @@ function getRequestToken(){
   }).on('error',(err)=>{
     console.log("Error:",err);
   });
-
+  req.setTimeout(3000,() => {
+    console.log("timed out");
+  });
   req.end();
 }
