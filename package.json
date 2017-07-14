@@ -19,7 +19,9 @@
   "homepage": "https://github.com/dan12t3/homigo-quickbooks#readme",
   "dependencies": {
     "body-parser": "^1.17.2",
-    "express": "^4.15.3"
+    "express": "^4.15.3",
+    "intuit-ipp-anywhere": "^1.3.3",
+    "oauth-signature": "^1.3.1"
   },
   "devDependencies": {
     "eslint": "^4.2.0",

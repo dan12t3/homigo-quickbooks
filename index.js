@@ -3,20 +3,17 @@ const http = require('http');
 const console = require('console');
 const crypto = require('crypto');
 const querystring = require('querystring');
+const oauthSignature = require('oauth-signature');
+
 //const bodyParser = require('body-parser');
 
 let app = express();
 
-const grantURL = 'http://localhost:5000.com/oauth-redirect';
+const grantURL = 'https://kwikview-backend.herokuapp.com/oauth-redirect';
 const consumerKey = 'qyprdpCFmIezychyaIgYRuY6osoApE';
+const consumerSecret = 'gqtzYIHUtJEpodZGe1oqsvvoyVdEENds089e7x4e';
 
-// listening on a PORT
-/*app.use(bodyParser.urlencoded({
-  extended: false
-}))
 
-app.use(bodyParser.json());
-*/
 app.listen( process.env.PORT || 5000, (err) => {
   if(err){
     console.log(err);
@@ -28,49 +25,31 @@ app.listen( process.env.PORT || 5000, (err) => {
 //functions
 app.get('/oauth-redirect',(request, response) => {
   console.log(request.query);
-  response.end();
+  response.end('redirected');
 });
 
-app.get('/',(request,response) => {
-  getRequestToken();
-  response.end("ok");
+app.get('/request-token',(request,response) => {
+  getRequestToken(response);
+
 });
 
+function getRequestToken(response){
 
-// test case
-/*app.get('/oauth/v1/get_request_token',(request,response) =>{
-  console.log(request.query);
-  response.send('ok');
-});*/
+  const url = 'https://oauth.intuit.com/oauth/v1/get_request_token';
 
-function getRequestToken(){
-  //sending to
-  //what im sending
-  const data = querystring.stringify({
-    'oauth_callback': grantURL,
-    'oauth_consumer_key': consumerKey,
-    'oauth_nonce': crypto.randomBytes(16).toString('hex'),
-    'oauth_signature': 'eqjbD6s%2FZiZy8FiNU9uoaspF6Q4%3D&',
-    'oauth_signature_method': 'HMAC-SHA1&',
-    'oauth_timestamp': +new Date(), //doesnt work
-    'oauth_version': '1.0'
-  });
-
-  const options = {
-    host: 'oauth.intuit.com',
-    path: '/oauth/v1/get_request_token?' + data,
-    method: 'GET',
-    port: 80,
+  const para = {
+    oauth_callback: grantURL,
+    oauth_consumer_key: consumerKey,
+    oauth_nonce: crypto.randomBytes(16).toString('hex'),
+    oauth_signature_method: 'HMAC-SHA1',
+    oauth_timestamp: +new Date(), //doesnt work
+    oauth_version: '1.0'
   }
 
-  let req = http.request(options, (response) => {
-    console.log("Response Code:",response.statusCode);
+  const encodedSignature = 'oauth_signature='+oauthSignature.generate('GET', url, para, consumerSecret);
 
-  }).on('error',(err)=>{
-    console.log("Error:",err);
-  });
-  req.setTimeout(3000,() => {
-    console.log("timed out");
-  });
-  req.end();
+  const encodedPara = querystring.stringify(para);
+  //response.send('ok');
+  response.redirect(url + '?' + encodedPara + '&' + encodedSignature);
+
 }
