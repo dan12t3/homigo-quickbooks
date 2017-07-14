@@ -52,4 +52,23 @@ function getRequestToken(response){
   //response.send('ok');
   response.redirect(url + '?' + encodedPara + '&' + encodedSignature);
 
+  /*var options = {
+    host: 'oauth.intuit.com',
+    port: 443,
+    path: '/oauth/v1/get_request_token?' + encodedPara + '&' + encodedSignature,
+    headers: {
+      'User-Agent' : 'javascript'
+    }
+  }
+  http.get(options,(res) => {
+    console.log(res.statusCode);
+  })
+  .on('error',(err) => {
+    console.log(err);
+  }).on('data',(chunk)=>{
+    console.log(chunk);
+  });
+
+  response.send('ok');
+*/
 }
